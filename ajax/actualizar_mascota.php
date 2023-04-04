@@ -1,16 +1,20 @@
 <?php
-
 include('config.php');
 
 $token = $_GET['token'];
+
+if (!isset($token) || empty($token)) {
+    die('Invalid token');
+}
+
 // Obtener los datos actuales del registro
-    $nombre = $_GET['nombre'];
-    $raza = $_GET['raza'];
-    $color = $_GET['color'];
-    $peso = $_GET['peso'];
-    $altura = $_GET['altura'];
-    $sexo = $_GET['sexo'];
-    $fech_nacimiento = $_GET['fech_nacimiento'];
+$nombre = $_GET['nombre'];
+$raza = $_GET['raza'];
+$color = $_GET['color'];
+$peso = $_GET['peso'];
+$altura = $_GET['altura'];
+$sexo = $_GET['sexo'];
+$fech_nacimiento = $_GET['fech_nacimiento'];
 
 // Actualizar el registro en la base de datos
 $stmt = $pdo->prepare("UPDATE mascotas SET 
@@ -20,7 +24,7 @@ $stmt = $pdo->prepare("UPDATE mascotas SET
     peso = :peso, 
     altura = :altura, 
     sexo = :sexo, 
-    fech_nacimiento = :fech_nacimiento,
+    fech_nacimiento = :fech_nacimiento
 WHERE token = :token");
 
 $stmt->execute([
@@ -34,12 +38,8 @@ $stmt->execute([
     'token' => $token
 ]);
 
-
-
-
-
-
-
-
-
-
+if ($stmt->rowCount() > 0) {
+    echo 'Registro actualizado exitosamente';
+} else {
+    echo 'No se encontró el registro con el token proporcionado';
+}

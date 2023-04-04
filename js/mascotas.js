@@ -12,14 +12,16 @@ $(document).ready(function () {
 
 
 
-$('#guardar').click(function () {
+$('#guardar').click(function (event) {
+  event.preventDefault(); 
 $.ajax({}).abort();
   $("#editar").off("click");
   $("button[type=submit]").attr("id", "guardar");
   $("#guardar").off("click");
-  guardarMascota();  
-  $("#guardar").click(function () {
-      
+  guardarMascota();
+  $("#guardar").click(function (event) {
+    
+        
   });
 })
 
@@ -76,7 +78,13 @@ function cargarDatos(buscar) {
         $("button[type=submit]").attr("id", "editar")
         $("#editar").off("click");
 
-        $("#editar").click(function () {
+        
+        $("#editar").click(function (event) {
+          event.preventDefault(); 
+          $("#form_mascotas").submit(function (event) {
+            event.preventDefault(); // detiene el envío del formulario
+            alert(tokenMascota); // llama a la función para guardar la mascota
+          });
           editarMascota(tokenMascota);
         });
         var tokenMascota = $(this).data("id");
@@ -162,7 +170,6 @@ function cargarDatos(buscar) {
 
 function guardarMascota() {
   var datos = $("#form_mascotas").serialize(); // serializa los datos del formulario
-  alert(datos);
   $.ajax({
     url: "gmascotas.php",  // archivo PHP para procesar los datos
     type: "GET",

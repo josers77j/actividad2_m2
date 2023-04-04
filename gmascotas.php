@@ -36,4 +36,4 @@ if (preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚ ]+$/', $_GET['nombre'])&&
 }
 
 
-$conn = null;
+$pdo = null;
