@@ -10,19 +10,43 @@ $(document).ready(function () {
   });
 });
 
+function crearBoton(nombre, id, tokenMascota) {
+  var token = tokenMascota
+  // Crear el botón
+  var boton = document.createElement("button");
+
+  // Establecer el texto y el id del botón
+  boton.textContent = nombre;
+  boton.id = id;
+
+  // Agregar la clase "btn" y "btn-primary" al botón
+  boton.classList.add("btn", "btn-primary");
+
+  // Agregar el botón al DOM
+  containerbutton.appendChild(boton);
+  boton.onclick = function () {
+    console.log("Se hizo clic en el botón " + token);
+    if (!token) {
+      guardarMascota();
+    }else{
+      
+      editarMascota(token);
+    }
+  };
+}
 
 
-$('#guardar').click(function (event) {
-  event.preventDefault(); 
-$.ajax({}).abort();
-  $("#editar").off("click");
-  $("button[type=submit]").attr("id", "guardar");
-  $("#guardar").off("click");
-  guardarMascota();
-  $("#guardar").click(function (event) {
-    
-        
-  });
+
+$('#nuevo').click(function () {
+  count = 0;
+  document.getElementById("containerbutton").innerHTML = "";
+  if (count > 0) {
+    console.log('ya has presionado el boton');
+  } else {
+    crearBoton("guardar", "guardar", "");
+    var save = document.getElementById("guardar");
+    count++;
+  }
 })
 
 
@@ -37,7 +61,7 @@ function limpiarFormulario() {
 function cargarDatos(buscar) {
   // Hacer la petición AJAX
   $.ajax({
-   url: "ajax/carga_mascotas.php",
+    url: "ajax/carga_mascotas.php",
     type: "GET",
     dataType: "json",
     data: { buscar: buscar },
@@ -56,16 +80,16 @@ function cargarDatos(buscar) {
         tr.append("<td>" + mascota.altura + "</td>");
         tr.append("<td>" + mascota.sexo + "</td>");
         tr.append("<td>" + mascota.fech_nacimiento + "</td>");
-        tr.append(   "<td>" 
-                   + "<ul class='list-inline m-0'><li class='list-inline-item'>" 
-                   + "<button data-bs-toggle='modal' data-bs-target='#exampleModal' class='btn btn-warning editar-mascota' data-id='" + mascota.token +"'> "
-                   + "<i class='bi bi-pencil-square'></i>"
-                   + "</button>" 
-                   + "</li> "
-                   + "<li class='list-inline-item'>"
-                   + "<button class='btn btn-danger eliminar-mascota' data-id='" + mascota.token +"'>"
-                   + "<i class='bi bi-trash2'></i> "
-                   + "</button></li></ul></td>");
+        tr.append("<td>"
+          + "<ul class='list-inline m-0'><li class='list-inline-item'>"
+          + "<button data-bs-toggle='modal' data-bs-target='#exampleModal' class='btn btn-warning editar-mascota' data-id='" + mascota.token + "'> "
+          + "<i class='bi bi-pencil-square'></i>"
+          + "</button>"
+          + "</li> "
+          + "<li class='list-inline-item'>"
+          + "<button class='btn btn-danger eliminar-mascota' data-id='" + mascota.token + "'>"
+          + "<i class='bi bi-trash2'></i> "
+          + "</button></li></ul></td>");
 
         tbody.append(tr);
       });
@@ -74,30 +98,34 @@ function cargarDatos(buscar) {
       $(".editar-mascota").click(function () {
         var tokenMascota = $(this).data("id");
 
-        $("#guardar").off("click");
-        $("button[type=submit]").attr("id", "editar")
-        $("#editar").off("click");
+        // $("#guardar").off("click");
+        // $("button[type=submit]").attr("id", "editar")
+        // $("#editar").off("click");
 
-        
-        $("#editar").click(function (event) {
-          event.preventDefault(); 
-          $("#form_mascotas").submit(function (event) {
-            event.preventDefault(); // detiene el envío del formulario
-            alert(tokenMascota); // llama a la función para guardar la mascota
-          });
-          editarMascota(tokenMascota);
-        });
-        var tokenMascota = $(this).data("id");
+        count = 0;
+        document.getElementById("containerbutton").innerHTML = "";
+        if (count > 0) {
+          console.log('ya has presionado el boton');
+        } else {
+          crearBoton("editar", "editar", tokenMascota);
+          var save = document.getElementById("guardar");
+          count++;
+        }
+
+        // $("#editar").click(function (event) {
+        //   event.preventDefault();
+        //   editarMascota(tokenMascota);
+        // });
         
         //************************************************************************************** */
         // Hacer la petición AJAX para obtener los datos de la mascota a editar
         $.ajax({
-           url: "ajax/obtener_mascota.php?tokenMascota=" + tokenMascota,
+          url: "ajax/obtener_mascota.php?tokenMascota=" + tokenMascota,
           type: "GET",
           dataType: "json",
           success: function (mascota) {
             // Llenar los campos del formulario con los datos de la mascota a editar
-            
+
             $("#nombre").val(mascota.nombre);
             $("#raza").val(mascota.raza);
             $("#color").val(mascota.color);
@@ -123,7 +151,7 @@ function cargarDatos(buscar) {
       /************************************************************************************************* */
       // Asignar el evento de click al botón de eliminación
       $(".eliminar-mascota").click(function () {
-       var tokenMascota = $(this).data("id");
+        var tokenMascota = $(this).data("id");
 
         Swal.fire({
           title: '¿Estas seguro?',
@@ -156,9 +184,9 @@ function cargarDatos(buscar) {
           }
         })
 
-        
+
         // Hacer la petición AJAX para eliminar el registro
-        
+
       });
     },
     error: function () {
@@ -196,23 +224,25 @@ function guardarMascota() {
 
 function editarMascota(tokenMascota) {
 
-  console.log(tokenMascota);
-  console.log('edita viene aca');
+  
   var token = tokenMascota;
   var datos = $("#form_mascotas").serialize(); // serializa los datos del formulario
+  console.log(token);
+  console.log(datos);
   $.ajax({
     url: "ajax/actualizar_mascota.?token=" + token, // archivo PHP para procesar los datos
     type: "GET",
     data: datos,
     success: function (response) {
-      
-        alert("Mascota modificada exitosamente");
-        $("#form_mascotas")[0].reset();   
-        cargarDatos("");
-        
+
+      alert("Mascota modificada exitosamente");
+      $("#form_mascotas")[0].reset();
+      $("#cerrarModal").click();
+      cargarDatos("");
+
     },
     error: function (xhr, status, error) {
-      
+
       console.log('function error');
       alert("Error al guardar la mascota");
       // manejar el error del servidor

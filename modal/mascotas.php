@@ -44,7 +44,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="guardar"<?= isset($tokenMascota) ? " onclick='funcionEditar()'" : ""  ?>>Guardar</button>
+            <div id="containerbutton"></div>
+                <!-- <button type="submit" class="btn btn-primary" id="guardar"<?= isset($tokenMascota) ? " onclick='funcionEditar()'" : ""  ?>>Guardar</button> -->
             </div>
             </form>
         </div>

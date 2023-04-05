@@ -1,11 +1,7 @@
 <?php
-include('config.php');
+include('../config.php');
 
 $token = $_GET['token'];
-
-if (!isset($token) || empty($token)) {
-    die('Invalid token');
-}
 
 // Obtener los datos actuales del registro
 $nombre = $_GET['nombre'];
@@ -38,8 +34,3 @@ $stmt->execute([
     'token' => $token
 ]);
 
-if ($stmt->rowCount() > 0) {
-    echo 'Registro actualizado exitosamente';
-} else {
-    echo 'No se encontró el registro con el token proporcionado';
-}

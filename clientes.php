@@ -30,6 +30,71 @@
             </div>
         </div>
     </div>
+
+    <div class="container">
+        <button id="add">agrega un boton</button>
+    </div>
+    <div id="buttoncontainer"></div>
+
+<script>
+// Seleccionar el contenedor de botones
+// Obtener el botón por su ID
+var button = document.getElementById("add");
+var count = 0;
+
+
+// Agregar un evento onclick al botón
+
+
+function crearBoton(nombre, id) {
+  // Crear el botón
+  var boton = document.createElement("button");
+  
+  // Establecer el texto y el id del botón
+  boton.textContent = nombre;
+  boton.id = id;
+  
+  // Agregar el botón al DOM
+  buttoncontainer.appendChild(boton);
+}
+
+button.addEventListener("click", function() {
+    if (count>0) {
+    console.log('ya has presionado el boton') ;
+  }else{
+    crearBoton("guardar", "guardar");
+    var save = document.getElementById("guardar");
+    count++;
+  }
+
+    save.addEventListener("click", function(){
+        console.log("hola");
+    })
+
+    
+//   // Aquí es donde se ejecuta el código cuando se hace clic en el botón
+  
+  
+
+    
+
+    
+// const buttonContainer = document.getElementById("button-container");
+
+// // Crear un nuevo botón
+// const newButton = document.createElement("button");
+// newButton.textContent = "Nuevo botón";
+
+// // Agregar el nuevo botón al contenedor
+// buttonContainer.appendChild(newButton);
+//     console.log("Haz hecho clic en el botón!");
+//     count++;
+ 
+//   }
+  
+});
+
+</script>
     <!-- Optional JavaScript; choose one of the two! -->
     <script src="jquery/jquery.js"></script>
     <!-- Option 1: Bootstrap Bundle with Popper -->
